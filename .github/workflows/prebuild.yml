@@ -20,7 +20,7 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm install -g json && json -I -f package.json -e 'this.name="@apify/better-sqlite3-prebuilds"'
+        run: npm install -g json && json -I -f package.json -e 'this.name="apify/better-sqlite3-prebuilds"'
       - name: Create a release
         uses: actions/create-release@v1
         env:
