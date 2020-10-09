@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch
+
+name: Prebuild
+
+jobs:
+  prebuild-node:
+    name: Upload Node Prebuild
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install
+      - name: build release
+        run: |
+          npx prebuild -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
