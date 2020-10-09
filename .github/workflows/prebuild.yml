@@ -19,6 +19,13 @@ jobs:
         with:
           node-version: 14
       - run: npm install
+      - name: Create a release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
       - name: build release
         run: |
           npx prebuild -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
