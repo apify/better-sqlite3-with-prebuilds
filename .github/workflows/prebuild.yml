@@ -12,11 +12,12 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
+        with:
+          repository: "http://github.com/JoshuaWise/better-sqlite3"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: 14
-          repository: "http://github.com/JoshuaWise/better-sqlite3"
       - run: npm install
       - name: build release
         run: |
