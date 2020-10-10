@@ -20,7 +20,7 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm install -g json && json -I -f package.json -e 'this.name="better-sqlite3-prebuilds"'
+        run: npe name "better-sqlite3-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilds.git"
         continue-on-error: true # release might be already changed
       - name: Show package.json
         run: cat package.json
