@@ -26,7 +26,7 @@ jobs:
       - name: Build release
         run: npx prebuild -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -u ${{ secrets.GITHUB_TOKEN }}
       - uses: JS-DevTools/npm-publish@v1
+        continue-on-error: true # release might be already done and the prepublish fails on windows
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: "public"
-          check-version: false
