@@ -1,15 +1,12 @@
 on:
   workflow_dispatch
 
-name: Build&Publish
+name: Publish
 
 jobs:
   prebuild-node:
-    name: Upload Node Prebuild
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+    name: Publish package to npm
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -21,7 +18,8 @@ jobs:
       - run: npm install
       - name: Change package name
         run: npm i npe -g && npe name "@apify/better-sqlite3-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilds.git"
-      - name: Show package.json
-        run: cat package.json
-      - name: Build release
-        run: npx prebuild -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -u ${{ secrets.GITHUB_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        continue-on-error: true # release might be already done and the prepublish fails on windows
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: "public"
