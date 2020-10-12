@@ -24,4 +24,4 @@ jobs:
       - name: Show package.json
         run: cat package.json
       - name: Build release
-        run: npx prebuild -r node --all -u ${{ secrets.GITHUB_TOKEN }}
+        run: npx prebuild -r node -t 10.20 -t 12 -t 14 -u ${{ secrets.GITHUB_TOKEN }}
