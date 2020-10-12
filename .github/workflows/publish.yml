@@ -25,7 +25,7 @@ jobs:
       - name: DEBUG ZIP
         run: ls -la
       - name: Move to lzz usr/bin
-        run: sudo mv lzz /usr/local/bin
+        run: sudo mv lzz /usr/local/bin && rm -rf lzz.zip
       - uses: JS-DevTools/npm-publish@v1
         continue-on-error: true # release might be already done and the prepublish fails on windows
         with:
