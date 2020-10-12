@@ -26,8 +26,6 @@ jobs:
         run: ls -la
       - name: Move to lzz usr/bin
         run: sudo mv lzz /usr/local/bin
-      - name: Try LZZ
-        run: lzz
       - uses: JS-DevTools/npm-publish@v1
         continue-on-error: true # release might be already done and the prepublish fails on windows
         with:
