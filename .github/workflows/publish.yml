@@ -18,16 +18,16 @@ jobs:
       - run: npm install
       - name: Change package name
         run: npm i npe -g && npe name "@apify/better-sqlite3-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilds.git"
-      - name: Prepare for installing lzz
-        run: mkdir /tmp/lzz_arch && cd /tmp/lzz_arch
       - name: Download lzz
         run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
       - name: Unzip lzz
         run: unzip lzz.zip
       - name: DEBUG ZIP
         run: ls -la
+      - name: Move to lzz usr/bin
+        run: sudo mv lzz /usr/local/bin
       - name: Try LZZ
-        run: /tmp/lzz_arch/lzz
+        run: lzz
       - uses: JS-DevTools/npm-publish@v1
         continue-on-error: true # release might be already done and the prepublish fails on windows
         with:
