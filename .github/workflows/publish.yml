@@ -18,6 +18,8 @@ jobs:
       - run: npm install
       - name: Change package name
         run: npm i npe -g && npe name "@apify/better-sqlite3-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilds.git"
+      - name: CD tes
+        run: cd src && ls -la
       - name: Install lzz
         run: mkdir /tmp/lzz_arch                         && \
              cd /tmp/lzz_arch                          && \
