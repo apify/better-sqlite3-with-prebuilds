@@ -1,5 +1,5 @@
 {
-  "name": "better-sqlite3-prebuilds",
+  "name": "better-sqlite3-prebuilts",
   "version": "1.0.0",
   "description": "Better SQLite prebuild & publish action",
   "main": "index.js",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/apify/better-sqlite3-prebuilds/issues"
   },
-  "homepage": "https://github.com/apify/better-sqlite3-prebuilds#readme"
+  "homepage": "https://github.com/apify/better-sqlite3-prebuilds#readme",
+  "dependencies": {
+    "better-sqlite3-prebuilt": "^1.0.2"
+  }
 }

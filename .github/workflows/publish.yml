@@ -17,7 +17,7 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm i npe -g && npe name "better-sqlite3-prebuilt" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilt.git"
+        run: npm i npe -g && npe name "better-sqlite3-prebuilts" && npe repository.url "git+https://github.com/apify/better-sqlite3-prebuilts.git"
       - name: Download lzz
         run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
       - name: Unzip lzz
