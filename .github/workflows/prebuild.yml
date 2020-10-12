@@ -24,4 +24,4 @@ jobs:
       - name: Show package.json
         run: cat package.json
       - name: Build release
-        run: npx prebuild -r node -t 10.22.1 -t 12.18.3 -t 14.13.1 -u ${{ secrets.GITHUB_TOKEN }}
+        run: npx prebuild -r node -t 10.22.1 -t 12.18.3 -t 14.13.1 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
