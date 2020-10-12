@@ -26,6 +26,8 @@ jobs:
              rm lzz.zip
       - name: DEBUG ZIP
         run: ls -la
+      - name: Try LZZ
+        run: /tmp/lzz_arch/lzz
       - uses: JS-DevTools/npm-publish@v1
         continue-on-error: true # release might be already done and the prepublish fails on windows
         with:
