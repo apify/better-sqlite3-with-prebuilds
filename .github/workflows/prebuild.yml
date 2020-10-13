@@ -20,8 +20,8 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" npe version "7.1.1-beta.1"
+        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" npe version "7.1.1-beta.2"
       - name: Show package.json
         run: cat package.json
       - name: Build release
-        run: npx prebuild -r node -t 10.22.1 -t 12.18.3 -t 14.13.1 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+        run: npx prebuild -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -u ${{ secrets.GITHUB_TOKEN }}
