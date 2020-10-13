@@ -1,5 +1,5 @@
 {
-  "name": "better-sqlite3-prebuilts",
+  "name": "better-sqlite3-with-prebuilds",
   "version": "1.0.0",
   "description": "Better SQLite prebuild & publish action",
   "main": "index.js",
