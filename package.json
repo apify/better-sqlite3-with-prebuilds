@@ -1,6 +1,6 @@
 {
   "name": "better-sqlite3-with-prebuilds",
-  "version": "7.1.1",
+  "version": "v7.1.1-beta.6",
   "description": "Better SQLite prebuild & publish action",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,5 @@
   "bugs": {
     "url": "https://github.com/apify/better-sqlite3-prebuilds/issues"
   },
-  "homepage": "https://github.com/apify/better-sqlite3-prebuilds#readme",
-  "dependencies": {
-    "better-sqlite3-with-prebuilds": "^7.1.1-beta.4"
-  }
+  "homepage": "https://github.com/apify/better-sqlite3-prebuilds#readme"
 }
