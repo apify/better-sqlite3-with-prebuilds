@@ -17,7 +17,7 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" && npe version "7.1.1-beta.2"
+        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" && npe version "7.1.1-beta.3"
       - name: Add verbose prebuild install
         run: npe scripts.install "prebuild-install --verbose || npm run build-release"
       - name: Download lzz
