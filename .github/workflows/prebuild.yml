@@ -20,7 +20,7 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
-        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" npe version "7.1.1-beta.0"
+        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" npe version "7.1.1-beta.1"
       - name: Show package.json
         run: cat package.json
       - name: Build release
