@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apify/better-sqlite3-prebuilds.git"
+    "url": "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
   },
   "author": "",
   "license": "ISC",
