@@ -16,7 +16,8 @@ jobs:
         with:
           repository: "JoshuaWise/better-sqlite3"
       - name: Setup Python
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2
+      - run: python --version  
       - name: Install global packages
         run: npm i -g npe detect-libc
       - name: Change ABI version
