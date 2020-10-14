@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: node:12-alpine
+      image: node:14-alpine
       
     steps:
       - uses: actions/checkout@v2
