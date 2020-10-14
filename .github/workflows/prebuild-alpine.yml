@@ -1,0 +1,30 @@
+on:
+  workflow_dispatch
+
+name: Build-Alpine
+
+jobs:
+  prebuild-node:
+    name: Upload Node Prebuild
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:12-alpine
+      
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: "JoshuaWise/better-sqlite3"
+      - name: Install npe globally
+        run: npm i npe -g
+      - name: Change ABI version
+        run: npe "devDependencies.node-abi" "2.18.0"
+        run: npe "devDependencies.detect-libc" "^1.0.3"
+      - run: npm install && npm list || true
+      - name: Change package name
+        run: npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
+      - name: Show package.json
+        run: cat package.json
+      - name: Build release
+        run: |
+          detect-libc node ./node_modules/prebuild/bin.js -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
