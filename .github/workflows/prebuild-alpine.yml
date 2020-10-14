@@ -19,8 +19,10 @@ jobs:
         run: npm i npe -g
       - name: Change ABI version
         run: npe "devDependencies.node-abi" "2.18.0"
+      - name: Add detect-libc  
         run: npe "devDependencies.detect-libc" "^1.0.3"
-      - run: npm install && npm list || true
+      - name: Install packages
+        run: npm install && npm list || true
       - name: Change package name
         run: npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
       - name: Show package.json
