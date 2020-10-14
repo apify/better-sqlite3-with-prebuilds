@@ -15,12 +15,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: "JoshuaWise/better-sqlite3"
-      - name: Install npe globally
-        run: npm i npe -g
+      - name: Install global packages
+        run: npm i -g npe detect-libc
       - name: Change ABI version
         run: npe "devDependencies.node-abi" "2.18.0"
-      - name: Add detect-libc  
-        run: npe "devDependencies.detect-libc" "^1.0.3"
       - name: Install packages
         run: npm install && npm list || true
       - name: Change package name
