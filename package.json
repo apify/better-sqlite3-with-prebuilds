@@ -1,6 +1,6 @@
 {
   "name": "better-sqlite3-with-prebuilds",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "Better SQLite prebuild & publish action",
   "main": "index.js",
   "scripts": {
