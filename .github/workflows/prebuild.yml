@@ -20,9 +20,10 @@ jobs:
           node-version: 14
       - name: Install npe globally
         run: npm i npe -g
-      - name: Change ABI version
-        run: npe "devDependencies.node-abi" "2.18.0"
-      - run: npm install && npm list || true
+        # Might not be needed anymore with a new version of the package
+#      - name: Change ABI version
+#        run: npe "devDependencies.node-abi" "2.18.0"
+      - run: npm install && (npm list || true)
       - name: Change package name
         run: npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
       - name: Show package.json
