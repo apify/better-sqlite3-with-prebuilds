@@ -29,4 +29,5 @@ jobs:
         run: cat package.json
       - name: Build release
         run: |
-          node ./node_modules/prebuild/bin.js -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+          npx prebuild -r electron -t 10.0.0 -t 11.0.0 -t 12.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+
