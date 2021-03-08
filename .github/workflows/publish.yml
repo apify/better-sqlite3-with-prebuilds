@@ -17,7 +17,15 @@ jobs:
           node-version: 14
       - run: npm install
       - name: Change package name
+        # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
         run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
+        # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
+        # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
+        # So in our package, we replace the version with the compatible one.
+      - name: Bump prebuild-install version
+        run: npe "dependencies.prebuild-install" "^6.0.1"
+      - name: Show package.json
+        run: cat package.json
       - name: Download lzz
         run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
       - name: Unzip lzz
