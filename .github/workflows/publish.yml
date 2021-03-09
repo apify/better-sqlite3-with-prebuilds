@@ -1,5 +1,9 @@
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      package_version:
+        description: 'Package version to be published to NPM'
+        required: true
 
 name: Publish
 
@@ -16,8 +20,15 @@ jobs:
         with:
           node-version: 14
       - run: npm install
-      - name: Change package name
-        run: npm i npe -g && npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
+      - name: Change package name and version
+        # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
+        # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
+        # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
+        # but not 7.2.0.
+        run: npm i npe -g \
+          && npe name "better-sqlite3-with-prebuilds" \
+          && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
+          && npe version "${{ github.event.inputs.package_version }}"
       - name: Download lzz
         run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
       - name: Unzip lzz

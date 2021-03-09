@@ -1,5 +1,9 @@
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      package_version:
+        description: 'Package version to be published to NPM'
+        required: true
 
 name: Build-Alpine
 
@@ -10,7 +14,7 @@ jobs:
 
     container:
       image: node:14-alpine
-      
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -19,7 +23,7 @@ jobs:
         run: apk add --update --no-cache bash git openssh make cmake alpine-sdk
       - name: Install Python
         run: apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-      - run: python --version  
+      - run: python --version
       - name: Install global packages
         run: npm i -g npe detect-libc
       - name: Change ABI version
@@ -27,7 +31,13 @@ jobs:
       - name: Install packages
         run: npm install && npm list || true
       - name: Change package name
-        run: npe name "better-sqlite3-with-prebuilds" && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git"
+        # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
+        # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
+        # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
+        # but not 7.2.0.
+        run: npe name "better-sqlite3-with-prebuilds" \
+          && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
+          && npe version "${{ github.event.inputs.package_version }}"
       - name: Show package.json
         run: cat package.json
       - name: Build release
