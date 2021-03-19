@@ -13,7 +13,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        # using older ubuntu to mitigate "/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.29' not found" error
+        os: [macos-latest, windows-latest, ubuntu-16.04]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -33,6 +34,11 @@ jobs:
         run: npe name "better-sqlite3-with-prebuilds" \
           && npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
           && npe version "${{ github.event.inputs.package_version }}"
+        # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
+        # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
+        # So in our package, we replace the version with the compatible one.
+      - name: Bump prebuild-install version
+        run: npe "dependencies.prebuild-install" "^6.0.1"
       - name: Show package.json
         run: cat package.json
       - name: Build release
