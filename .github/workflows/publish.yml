@@ -45,6 +45,7 @@ jobs:
           mkdir types
           mv index.d.ts types/index.d.ts
           npe types types/index.d.ts
+          npe dependencies.@types/integer latest
 
       - name: Show package.json
         run: cat package.json
