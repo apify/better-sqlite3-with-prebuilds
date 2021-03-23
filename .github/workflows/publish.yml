@@ -34,6 +34,14 @@ jobs:
         # So in our package, we replace the version with the compatible one.
       - name: Bump prebuild-install version
         run: npe "dependencies.prebuild-install" "^6.0.1"
+
+      - name: Inject typings
+        run: |
+          curl -O https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/better-sqlite3/index.d.ts
+          mkdir types
+          mv index.d.ts types/index.d.ts
+          npe types types/index.d.ts
+
       - name: Show package.json
         run: cat package.json
       - name: Download lzz
