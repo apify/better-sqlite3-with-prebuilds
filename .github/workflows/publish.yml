@@ -4,6 +4,10 @@ on:
       package_version:
         description: 'Package version to be published to NPM'
         required: true
+      dist_tag:
+        description: 'What dist tag should be used for publishing (e.g. `next` vs `latest`). Defaults to `latest`.'
+        required: true
+        default: latest
 
 name: Publish
 
@@ -58,3 +62,4 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           access: "public"
           dry-run: false
+          tag: ${{ github.event.inputs.dist_tag }}
