@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/apify/better-sqlite3-prebuilds#readme",
   "devDependencies": {
-    "prebuild": "^10.0.1"
+    "prebuild": "^11.0.3"
   }
 }

@@ -22,7 +22,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - name: Install npe globally
         run: npm i npe -g
       - run: npm install && (npm list || true)
@@ -38,9 +38,9 @@ jobs:
         # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
         # So in our package, we replace the version with the compatible one.
       - name: Bump prebuild-install version
-        run: npe "dependencies.prebuild-install" "^6.0.1"
+        run: npe "dependencies.prebuild-install" "^7.0.1"
       - name: Show package.json
         run: cat package.json
       - name: Build release
         run: |
-          node ./node_modules/prebuild/bin.js -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+          node ./node_modules/prebuild/bin.js -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}

@@ -22,7 +22,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - run: npm install
       - name: Change package name and version
         # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
@@ -37,7 +37,7 @@ jobs:
         # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
         # So in our package, we replace the version with the compatible one.
       - name: Bump prebuild-install version
-        run: npe "dependencies.prebuild-install" "^6.0.1"
+        run: npe "dependencies.prebuild-install" "^7.0.1"
 
       - name: Inject typings
         run: |
