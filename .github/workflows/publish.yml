@@ -24,6 +24,7 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: 18
+                    npm-version: 6
             -   run: npm install
             -   name: Change package name and version
                 # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
