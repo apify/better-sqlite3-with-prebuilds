@@ -25,7 +25,6 @@ jobs:
             -   name: Install Python
                 run: apk add --update --no-cache 'python3=3.10' && ln -sf python3 /usr/bin/python
             -   run: python --version
-            -   run: npm --version
             -   run: npm install -g npm@6
             -   run: npm --version
             -   name: Install packages
