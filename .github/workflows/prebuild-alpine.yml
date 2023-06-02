@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: "JoshuaWise/better-sqlite3"
+          ref: v7.6.2
       - name: Install Make tools
         run: apk add --update --no-cache bash git openssh make cmake alpine-sdk
       - name: Install Python
