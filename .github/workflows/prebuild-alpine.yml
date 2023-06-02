@@ -16,17 +16,14 @@ jobs:
             image: node:18-alpine
 
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v3
                 with:
                     repository: "JoshuaWise/better-sqlite3"
-                    ref: v7.6.2
             -   name: Install Make tools
                 run: apk add --update --no-cache bash git openssh make cmake alpine-sdk
             -   name: Install Python
-                run: apk add --update --no-cache 'python3=3.10' && ln -sf python3 /usr/bin/python
+                run: apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
             -   run: python --version
-            -   run: npm install -g npm@6
-            -   run: npm --version
             -   name: Install packages
                 run: npm install && npm list || true
             -   name: Change package name
@@ -37,13 +34,8 @@ jobs:
                 run: npx -y npe name "better-sqlite3-with-prebuilds" \
                     && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
                     && npx -y npe version "${{ github.event.inputs.package_version }}"
-                # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
-                # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
-                # So in our package, we replace the version with the compatible one.
-            -   name: Bump prebuild-install version
-                run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
             -   name: Show package.json
                 run: cat package.json
             -   name: Build release
                 run: |
-                    npx -y detect-libc node ./node_modules/prebuild/bin.js -r node -t 10.20.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 20.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+                    npx -y detect-libc node ./node_modules/prebuild/bin.js -r node -t 16.0.0 -t 18.0.0 -t 20.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}

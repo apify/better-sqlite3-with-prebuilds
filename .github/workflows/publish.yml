@@ -16,16 +16,13 @@ jobs:
         name: Publish package to npm
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v3
                 with:
                     repository: "JoshuaWise/better-sqlite3"
-                    ref: v7.6.2
             -   name: Use Node.js 18
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v3
                 with:
                     node-version: 18
-            -   run: npm install -g npm@6
-            -   run: npm --version
             -   run: npm install
             -   name: Change package name and version
                 # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
@@ -35,11 +32,6 @@ jobs:
                 run: npx -y npe name "better-sqlite3-with-prebuilds" \
                     && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
                     && npx -y npe version "${{ github.event.inputs.package_version }}"
-                # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
-                # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
-                # So in our package, we replace the version with the compatible one.
-            -   name: Bump prebuild-install version
-                run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
 
             -   name: Inject typings
                 run: |
