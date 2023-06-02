@@ -1,46 +1,49 @@
 on:
-  workflow_dispatch:
-    inputs:
-      package_version:
-        description: 'Package version to be published to NPM'
-        required: true
+    workflow_dispatch:
+        inputs:
+            package_version:
+                description: 'Package version to be published to NPM'
+                required: true
 
 name: Build Electron
 
 jobs:
-  prebuild-node:
-    name: Upload Node Prebuild
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        # using older ubuntu to mitigate "/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.29' not found" error
-        os: [macos-latest, windows-2019, ubuntu-18.04]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: "JoshuaWise/better-sqlite3"
-          ref: v7.6.2
-      - name: Use Node.js 18
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18
-      - run: npm install && (npm list || true)
-      - name: Change package name
-        # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
-        # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
-        # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
-        # but not 7.2.0.
-        run: npx -y npe name "better-sqlite3-with-prebuilds" \
-          && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
-          && npx -y npe version "${{ github.event.inputs.package_version }}"
-        # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
-        # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
-        # So in our package, we replace the version with the compatible one.
-      - name: Bump prebuild-install version
-        run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
-      - name: Show package.json
-        run: cat package.json
-      - name: Build release
-        run: |
-          npx prebuild -r electron -t 10.0.0 -t 11.0.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 20.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
+    prebuild-node:
+        name: Upload Node Prebuild
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                # using older ubuntu to mitigate "/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.29' not found" error
+                os: [ macos-latest, windows-2019, ubuntu-18.04 ]
+        steps:
+            -   uses: actions/checkout@v2
+                with:
+                    repository: "JoshuaWise/better-sqlite3"
+                    ref: v7.6.2
+            -   name: Use Node.js 18
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 18
+            -   uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10'
+            -   run: npm install && (npm list || true)
+            -   name: Change package name
+                # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
+                # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
+                # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
+                # but not 7.2.0.
+                run: npx -y npe name "better-sqlite3-with-prebuilds" \
+                    && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
+                    && npx -y npe version "${{ github.event.inputs.package_version }}"
+                # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
+                # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
+                # So in our package, we replace the version with the compatible one.
+            -   name: Bump prebuild-install version
+                run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
+            -   name: Show package.json
+                run: cat package.json
+            -   name: Build release
+                run: |
+                    npx prebuild -r electron -t 10.0.0 -t 11.0.0 -t 12.0.0 -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 20.0.0 --include-regex 'better_sqlite3.node$' -u ${{ secrets.GITHUB_TOKEN }}
 

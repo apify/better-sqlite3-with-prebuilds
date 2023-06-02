@@ -1,66 +1,66 @@
 on:
-  workflow_dispatch:
-    inputs:
-      package_version:
-        description: 'Package version to be published to NPM'
-        required: true
-      dist_tag:
-        description: 'What dist tag should be used for publishing (e.g. `next` vs `latest`). Defaults to `latest`.'
-        required: true
-        default: latest
+    workflow_dispatch:
+        inputs:
+            package_version:
+                description: 'Package version to be published to NPM'
+                required: true
+            dist_tag:
+                description: 'What dist tag should be used for publishing (e.g. `next` vs `latest`). Defaults to `latest`.'
+                required: true
+                default: latest
 
 name: Publish
 
 jobs:
-  prebuild-node:
-    name: Publish package to npm
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: "JoshuaWise/better-sqlite3"
-          ref: v7.6.2
-      - name: Use Node.js 18
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18
-      - run: npm install
-      - name: Change package name and version
-        # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
-        # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
-        # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
-        # but not 7.2.0.
-        run: npx -y npe name "better-sqlite3-with-prebuilds" \
-          && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
-          && npx -y npe version "${{ github.event.inputs.package_version }}"
-        # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
-        # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
-        # So in our package, we replace the version with the compatible one.
-      - name: Bump prebuild-install version
-        run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
+    prebuild-node:
+        name: Publish package to npm
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+                with:
+                    repository: "JoshuaWise/better-sqlite3"
+                    ref: v7.6.2
+            -   name: Use Node.js 18
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 18
+            -   run: npm install
+            -   name: Change package name and version
+                # We're cloning better-sqlite3 here and republishing it under a different name (with prebuilt binaries).
+                # Version is set manually, because sometimes we need to release new versions for the same version of better-sqlite3
+                # major.minor should be kept. e.g. better-sqlite3@7.1.2 can be released as better-sqlite3-with-prebuilds 7.1.5,
+                # but not 7.2.0.
+                run: npx -y npe name "better-sqlite3-with-prebuilds" \
+                    && npx -y npe repository.url "git+https://github.com/apify/better-sqlite3-with-prebuilds.git" \
+                    && npx -y npe version "${{ github.event.inputs.package_version }}"
+                # At this time, better-sqlite3 uses prebuild-install@5, which is incompatible with
+                # npm@7. NPM 7 users don't get our prebuilt binaries at all and their builds are failing.
+                # So in our package, we replace the version with the compatible one.
+            -   name: Bump prebuild-install version
+                run: npx -y npe "dependencies.prebuild-install" "^7.0.1"
 
-      - name: Inject typings
-        run: |
-          curl -O https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/better-sqlite3/index.d.ts
-          mkdir types
-          mv index.d.ts types/index.d.ts
-          npx -y npe types types/index.d.ts
-          npx -y npe dependencies.@types/integer latest
+            -   name: Inject typings
+                run: |
+                    curl -O https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/better-sqlite3/index.d.ts
+                    mkdir types
+                    mv index.d.ts types/index.d.ts
+                    npx -y npe types types/index.d.ts
+                    npx -y npe dependencies.@types/integer latest
 
-      - name: Show package.json
-        run: cat package.json
-      - name: Download lzz
-        run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
-      - name: Unzip lzz
-        run: unzip lzz.zip
-      - name: DEBUG ZIP
-        run: ls -la
-      - name: Move to lzz usr/bin
-        run: sudo mv lzz /usr/local/bin && rm -rf lzz.zip
-      - uses: JS-DevTools/npm-publish@v1
-        continue-on-error: true # release might be already done and the prepublish fails on windows
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          access: "public"
-          dry-run: false
-          tag: ${{ github.event.inputs.dist_tag }}
+            -   name: Show package.json
+                run: cat package.json
+            -   name: Download lzz
+                run: curl -sSL https://github.com/driedfruit/lzz/releases/download/v2.8.2/lzz_2_8_2_linux64.zip > lzz.zip
+            -   name: Unzip lzz
+                run: unzip lzz.zip
+            -   name: DEBUG ZIP
+                run: ls -la
+            -   name: Move to lzz usr/bin
+                run: sudo mv lzz /usr/local/bin && rm -rf lzz.zip
+            -   uses: JS-DevTools/npm-publish@v1
+                continue-on-error: true # release might be already done and the prepublish fails on windows
+                with:
+                    token: ${{ secrets.NPM_TOKEN }}
+                    access: "public"
+                    dry-run: false
+                    tag: ${{ github.event.inputs.dist_tag }}
